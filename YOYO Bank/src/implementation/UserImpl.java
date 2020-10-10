@@ -1,6 +1,7 @@
 package implementation;
 
 import com.fasterxml.jackson.core.JsonParser;
+import models.Account;
 import models.Address;
 import models.User;
 import java.io.*;
@@ -13,10 +14,12 @@ import java.util.Scanner;
 public class UserImpl{
     JSONParser jsonParser=new JSONParser();
  static Scanner input=new Scanner(System.in);
-
+    Account userAccount=new Account();
     public User Register(Scanner input)
     {
         JSONObject userJson=new JSONObject();
+        JSONObject Account=new JSONObject();
+        JSONObject Transaction=new JSONObject();
         User user=new User();
         System.out.println("Please enter your SIN");
         String SIN=input.next();
@@ -57,14 +60,44 @@ public class UserImpl{
         addr.setPin(pincode);
         userJson.put("Pincode",addr.getPin());
         user.setAddress(addr);
+        while (true){
+            System.out.println("Please Select the type of account\n 1) Checking\n 2) Savings)");
+            if (input.nextInt() == 1)
+            {
+                userAccount.setAccountType("Checking");
+                break;
+            }
+            else if (input.nextInt() == 2)
+            {
+                userAccount.setAccountType("Savings");
+                break;
+            }
+            System.out.println("Please select a valid Account Type");
+        };
+        Account.put("AcountType",userAccount.getAccountType());
+
         System.out.println("Please set a Password");
         String pass=input.next();
         user.setPassword(pass);
         userJson.put("Password",user.getPassword());
 
 
+        userAccount.setAccountNo(SIN);
+        Account.put("AccountNo",userAccount.getAccountNo());
+        userAccount.setBalance(0);
+        Account.put("Balance",userAccount.getBalance());
+
+
             String fileLocation="C:/Users/saikrishnaboddu/Documents/New folder/Java-Project-MAD3463/YOYO Bank/Files/";
             JSONObject userObject = new JSONObject();
+           // JSONObject accountDetails=new JSONObject();
+            //accountDetails.put("accountDetails",Account);
+            JSONArray accountArray=new JSONArray();
+            accountArray.add(Account);
+            JSONArray tranxArray=new JSONArray();
+            tranxArray.add(Transaction);
+            userJson.put("AcountDetails",accountArray);
+            userJson.put("TransactionDetails",tranxArray);
             userObject.put("userDetails",userJson);
 
             try (FileWriter file = new FileWriter(fileLocation+SIN+".json")){
@@ -84,7 +117,8 @@ public class UserImpl{
         String username=input.next();
         System.out.println("Please enter password");
         String pass=input.next();
-        try (FileReader reader = new FileReader("C:/Users/saikrishnaboddu/Documents/New folder/Java-Project-MAD3463/YOYO Bank/Files/"+username+".json"))
+        String file="C:/Users/saikrishnaboddu/Documents/New folder/Java-Project-MAD3463/YOYO Bank/Files/"+username+".json";
+        try (FileReader reader = new FileReader(file))
         {
 
             //Read JSON file
@@ -93,8 +127,8 @@ public class UserImpl{
 
             if(pass.equals(details.get("Password"))) {
                 System.out.println("Login Successful");
-                System.out.println(obj);
-            return details.get("Name").toString();
+                //System.out.println(obj);
+            return username;
             }
 
             else
