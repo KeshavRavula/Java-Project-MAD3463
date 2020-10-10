@@ -24,7 +24,7 @@ public class AccountImpl {
             //System.out.println(AccountDetails.toString());
             JSONObject AccountObj=(JSONObject)AccountDetails.get(0);
             double balance=(double)AccountObj.get("Balance");
-            System.out.println("Your Account Balance is : "+balance);
+            //System.out.println("Your Account Balance is : "+balance);
             return balance;
 
         } catch (FileNotFoundException e) {
