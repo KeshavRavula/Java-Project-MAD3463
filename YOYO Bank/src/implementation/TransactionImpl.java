@@ -20,13 +20,12 @@ public class TransactionImpl {
     double newBalance;
     String transactions;
 
-    public void withDraw(String accountNo, double amount, String file) {
+    public void withDraw( double amount, String file) {
         oldBalance = accountImpl.DisplayBalance(file);
         if (oldBalance > 0) {
-            System.out.println("Enter Amount to withdraw");
-            double withdrawAmount = input.nextDouble();
-            if (withdrawAmount < oldBalance) {
-                newBalance = oldBalance - withdrawAmount;
+
+            if (amount < oldBalance) {
+                newBalance = oldBalance - amount;
                 oldBalance = newBalance;
                 //String file="C:/Users/saikrishnaboddu/Documents/New folder/Java-Project-MAD3463/YOYO Bank/Files/"+username+".json";
                 try (FileReader reader = new FileReader(file)) {
@@ -68,14 +67,13 @@ public class TransactionImpl {
                 System.out.println("No balance");
         }
 
-        public void deposit(String accountNo,String file)
+        public void deposit(double amount,String file)
         {
             oldBalance = accountImpl.DisplayBalance(file);
 
-                System.out.println("Enter Amount to Deposit");
-                double depositAmount = input.nextDouble();
 
-                    newBalance = oldBalance + depositAmount;
+
+                    newBalance = oldBalance + amount;
                     oldBalance = newBalance;
                     //String file="C:/Users/saikrishnaboddu/Documents/New folder/Java-Project-MAD3463/YOYO Bank/Files/"+username+".json";
                     try (FileReader reader = new FileReader(file)) {
@@ -90,7 +88,7 @@ public class TransactionImpl {
                         JSONArray transactionDetails = (JSONArray) details.get("TransactionDetails");
                         JSONObject transactionObject=new JSONObject();
                         transactionObject.put("TransactionID", UUID.randomUUID().toString());
-                        transactionObject.put("TransactionType", "Withdrawal");
+                        transactionObject.put("TransactionType", "Deposit");
                         transactionObject.put("TransactionDate", new Date().toString());
                         transactionDetails.add(transactionObject);
 
@@ -112,6 +110,17 @@ public class TransactionImpl {
                     }
 
         }
+        public void transfer(String fromfile)
+        {
+            System.out.println("Please enter the receiver's account number");
+            String receiver=input.next();
+            System.out.println("Please enter amount to transfer");
+            double amountToTransfer=input.nextDouble();
+            withDraw(amountToTransfer,fromfile);
+            String tofile="C:/Users/saikrishnaboddu/Documents/New folder/Java-Project-MAD3463/YOYO Bank/Files/"+receiver+".json";
+            deposit(amountToTransfer,tofile);
+        }
+
 
         public String displayTransactions(String file)
         {

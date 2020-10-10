@@ -50,18 +50,23 @@ public class App {
             choice = input.nextInt();
             switch (choice) {
                 case 1:
-                    accountImpl.DisplayBalance(file);
+                    System.out.println("Your Account Balance is : "+accountImpl.DisplayBalance(file));
                     break;
                 case 2:
                     System.out.println(transactionImpl.displayTransactions(file));
                     break;
                 case 3:
-                    transactionImpl.deposit(loggedInUser,file);
+                    System.out.println("Enter Amount to Deposit");
+                    double depositAmount = input.nextDouble();
+                    transactionImpl.deposit(depositAmount,file);
                     break;
                 case 4:
-                    transactionImpl.withDraw(loggedInUser, 20, file);
+                    System.out.println("Please enter amount to withdraw");
+                    double amountToWithDraw=input.nextDouble();
+                    transactionImpl.withDraw( amountToWithDraw,file);
                     break;
-                case 5://ToDo Transfer
+                case 5:
+                    transactionImpl.transfer(file);
                     break;
                 case 6://ToDo Display Uitlity Bills
                     break;
