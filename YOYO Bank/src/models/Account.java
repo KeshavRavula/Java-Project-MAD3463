@@ -1,5 +1,7 @@
 package models;
 
+import implementation.UserImpl;
+
 public class Account {
     private String accountNo;
     private String accountType;
