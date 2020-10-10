@@ -58,12 +58,12 @@ public class App {
                 case 3:
                     System.out.println("Enter Amount to Deposit");
                     double depositAmount = input.nextDouble();
-                    transactionImpl.deposit(depositAmount,file);
+                    transactionImpl.deposit(depositAmount,file,"Deposit");
                     break;
                 case 4:
                     System.out.println("Please enter amount to withdraw");
                     double amountToWithDraw=input.nextDouble();
-                    transactionImpl.withDraw( amountToWithDraw,file);
+                    transactionImpl.withDraw( amountToWithDraw,file,"Withdraw");
                     break;
                 case 5:
                     transactionImpl.transfer(file);

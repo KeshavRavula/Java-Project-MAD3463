@@ -20,7 +20,7 @@ public class TransactionImpl {
     double newBalance;
     String transactions;
 
-    public void withDraw( double amount, String file) {
+    public void withDraw( double amount, String file,String transactionType) {
         oldBalance = accountImpl.DisplayBalance(file);
         if (oldBalance > 0) {
 
@@ -40,7 +40,7 @@ public class TransactionImpl {
                     JSONArray transactionDetails = (JSONArray) details.get("TransactionDetails");
                     JSONObject transactionObject=new JSONObject();
                     transactionObject.put("TransactionID", UUID.randomUUID().toString());
-                    transactionObject.put("TransactionType", "Withdrawal");
+                    transactionObject.put("TransactionType", transactionType);
                     transactionObject.put("TransactionDate", new Date().toString());
                     transactionDetails.add(transactionObject);
 
@@ -67,7 +67,7 @@ public class TransactionImpl {
                 System.out.println("No balance");
         }
 
-        public void deposit(double amount,String file)
+        public void deposit(double amount,String file,String trnsactionType)
         {
             oldBalance = accountImpl.DisplayBalance(file);
 
@@ -88,7 +88,7 @@ public class TransactionImpl {
                         JSONArray transactionDetails = (JSONArray) details.get("TransactionDetails");
                         JSONObject transactionObject=new JSONObject();
                         transactionObject.put("TransactionID", UUID.randomUUID().toString());
-                        transactionObject.put("TransactionType", "Deposit");
+                        transactionObject.put("TransactionType", trnsactionType);
                         transactionObject.put("TransactionDate", new Date().toString());
                         transactionDetails.add(transactionObject);
 
@@ -116,9 +116,9 @@ public class TransactionImpl {
             String receiver=input.next();
             System.out.println("Please enter amount to transfer");
             double amountToTransfer=input.nextDouble();
-            withDraw(amountToTransfer,fromfile);
+            withDraw(amountToTransfer,fromfile,"Transfer");
             String tofile="C:/Users/saikrishnaboddu/Documents/New folder/Java-Project-MAD3463/YOYO Bank/Files/"+receiver+".json";
-            deposit(amountToTransfer,tofile);
+            deposit(amountToTransfer,tofile,"Transfer");
         }
 
 
