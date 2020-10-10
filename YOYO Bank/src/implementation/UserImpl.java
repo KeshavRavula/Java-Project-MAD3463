@@ -13,6 +13,7 @@ import java.util.Scanner;
 public class UserImpl{
     JSONParser jsonParser=new JSONParser();
  static Scanner input=new Scanner(System.in);
+
     public User Register(Scanner input)
     {
         JSONObject userJson=new JSONObject();
@@ -77,7 +78,7 @@ public class UserImpl{
         return user;
 
     }
-    public void Login()
+    public String Login()
     {
         System.out.println("Please enter username");
         String username=input.next();
@@ -93,8 +94,9 @@ public class UserImpl{
             if(pass.equals(details.get("Password"))) {
                 System.out.println("Login Successful");
                 System.out.println(obj);
+            return details.get("Name").toString();
             }
-            
+
             else
             {
                 System.out.println("Wrong pass");
@@ -110,6 +112,7 @@ public class UserImpl{
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 
