@@ -52,9 +52,11 @@ public class App {
                 case 1:
                     accountImpl.DisplayBalance(file);
                     break;
-                case 2://ToDo Display Transactions
+                case 2:
+                    System.out.println(transactionImpl.displayTransactions(file));
                     break;
-                case 3://ToDo Deposit
+                case 3:
+                    transactionImpl.deposit(loggedInUser,file);
                     break;
                 case 4:
                     transactionImpl.withDraw(loggedInUser, 20, file);
