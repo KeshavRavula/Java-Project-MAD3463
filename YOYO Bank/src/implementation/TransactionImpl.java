@@ -1,14 +1,15 @@
 package implementation;
 
-import org.json.simple.*;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -41,13 +42,9 @@ public class TransactionImpl {
                     JSONObject transactionObject=new JSONObject();
                     transactionObject.put("TransactionID", UUID.randomUUID().toString());
                     transactionObject.put("TransactionType", transactionType);
+                    transactionObject.put("TransactionAmount",amount);
                     transactionObject.put("TransactionDate", new Date().toString());
                     transactionDetails.add(transactionObject);
-
-
-
-                    //JSONObject transactionObject = (JSONObject) transactionDetails.get(transactionDetails.size() - 1);
-
 
                     FileWriter fileName = new FileWriter(file);
                     fileName.write(obj.toJSONString());
@@ -69,10 +66,7 @@ public class TransactionImpl {
 
         public void deposit(double amount,String file,String trnsactionType)
         {
-            oldBalance = accountImpl.DisplayBalance(file);
-
-
-
+                    oldBalance = accountImpl.DisplayBalance(file);
                     newBalance = oldBalance + amount;
                     oldBalance = newBalance;
                     //String file="C:/Users/saikrishnaboddu/Documents/New folder/Java-Project-MAD3463/YOYO Bank/Files/"+username+".json";
@@ -87,15 +81,11 @@ public class TransactionImpl {
 
                         JSONArray transactionDetails = (JSONArray) details.get("TransactionDetails");
                         JSONObject transactionObject=new JSONObject();
+                        transactionObject.put("TransactionAmount",amount);
                         transactionObject.put("TransactionID", UUID.randomUUID().toString());
                         transactionObject.put("TransactionType", trnsactionType);
                         transactionObject.put("TransactionDate", new Date().toString());
                         transactionDetails.add(transactionObject);
-
-
-
-                        //JSONObject transactionObject = (JSONObject) transactionDetails.get(transactionDetails.size() - 1);
-
 
                         FileWriter fileName = new FileWriter(file);
                         fileName.write(obj.toJSONString());
@@ -117,7 +107,8 @@ public class TransactionImpl {
             System.out.println("Please enter amount to transfer");
             double amountToTransfer=input.nextDouble();
             withDraw(amountToTransfer,fromfile,"Transfer");
-            String tofile="C:/Users/saikrishnaboddu/Documents/New folder/Java-Project-MAD3463/YOYO Bank/Files/"+receiver+".json";
+            String tofile = System.getProperty("user.dir")+"/Files/"+receiver+".json";
+           //String tofile="C:/Users/saikrishnaboddu/Documents/New folder/Java-Project-MAD3463/YOYO Bank/Files/"+receiver+".json";
             deposit(amountToTransfer,tofile,"Transfer");
         }
 
@@ -134,8 +125,19 @@ public class TransactionImpl {
                 accountObj.put("Balance", newBalance);
 
                 JSONArray transactionDetails = (JSONArray) details.get("TransactionDetails");
-                return transactionDetails.toString();
+                for (int i = 0; i < transactionDetails.size(); i++) {
+                    JSONObject trandetails = (JSONObject) transactionDetails.get(i);
+                    if(trandetails.size()!=0)
+                    {
+                        trandetails.get("TransactionID");
+                        trandetails.get("TransactionAmount");
+                        trandetails.get("TransactionType");
+                        trandetails.get("TransactionDate");
+                        System.out.println(trandetails.toString());
+                    }
 
+                }
+                return transactionDetails.toString();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -147,4 +149,3 @@ public class TransactionImpl {
         }
 
     }
-

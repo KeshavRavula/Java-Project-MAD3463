@@ -2,7 +2,8 @@ import implementation.AccountImpl;
 import implementation.TransactionImpl;
 import implementation.UserImpl;
 import models.User;
-
+import java.io.File;
+import java.net.URL;
 import java.util.Scanner;
 
 public class App {
@@ -11,7 +12,7 @@ public class App {
     public static AccountImpl accountImpl=new AccountImpl();
     public static TransactionImpl transactionImpl=new TransactionImpl();
     public static String loggedInUser;
-    static String file;
+    String file = System.getProperty("user.dir");
     public static void main(String[] args) throws Exception {
         System.out.println("Welcome to YOYO Bank: ");
         int choice;
@@ -22,8 +23,14 @@ public class App {
             switch (choice) {
                 case 1:
                     loggedInUser=userImpl.Login();
-                    loginSuccess();
-                    break;
+                    if(loggedInUser==null) {
+                        break;
+                    }
+                    else{
+                        App app = new App();
+                        app.loginSuccess();
+                        break;
+                    }
 
                 case 2:
                     userImpl.Register(input);
@@ -39,11 +46,13 @@ public class App {
 
     }
 
-    public static void loginSuccess()
+    public void loginSuccess()
     {
 
         System.out.println("Welcome User "+loggedInUser);
-        file="C:/Users/saikrishnaboddu/Documents/New folder/Java-Project-MAD3463/YOYO Bank/Files/"+loggedInUser+".json";
+        file+="/Files/"+loggedInUser+".json";
+
+
         int choice;
         do {
             System.out.println("Please select and option :\n 1) Display Account Balance\n 2) Display Transactions\n 3) Deposit Money\n 4) Withdraw Money\n 5) Transfer Money\n 6) Utility Bill\n 0) Logout");

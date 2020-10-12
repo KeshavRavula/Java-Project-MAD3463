@@ -87,11 +87,8 @@ public class UserImpl{
         userAccount.setBalance(0);
         Account.put("Balance",userAccount.getBalance());
 
-
-            String fileLocation="C:/Users/saikrishnaboddu/Documents/New folder/Java-Project-MAD3463/YOYO Bank/Files/";
+            String fileLocation = System.getProperty("user.dir")+"/Files";
             JSONObject userObject = new JSONObject();
-           // JSONObject accountDetails=new JSONObject();
-            //accountDetails.put("accountDetails",Account);
             JSONArray accountArray=new JSONArray();
             accountArray.add(Account);
             JSONArray tranxArray=new JSONArray();
@@ -117,7 +114,8 @@ public class UserImpl{
         String username=input.next();
         System.out.println("Please enter password");
         String pass=input.next();
-        String file="C:/Users/saikrishnaboddu/Documents/New folder/Java-Project-MAD3463/YOYO Bank/Files/"+username+".json";
+        String file = System.getProperty("user.dir");
+        file+="/Files/"+username+".json";
         try (FileReader reader = new FileReader(file))
         {
 
@@ -127,7 +125,6 @@ public class UserImpl{
 
             if(pass.equals(details.get("Password"))) {
                 System.out.println("Login Successful");
-                //System.out.println(obj);
             return username;
             }
 
