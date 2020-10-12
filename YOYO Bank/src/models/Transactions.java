@@ -43,9 +43,9 @@ public class Transactions {
 
     @Override
     public String toString() {
-        return "Transaction:" + "\nTransaction ID=" + tranxID +
+        return "\nTransaction:" + "\nTransaction ID=" + tranxID +
                 "\nTransaction Type=" + tranxType+
                 "\nTransaction Date=" + tranxDate +
-                "\nTransaction Amount=" + tranxAmount;
+                "\nTransaction Amount=" + tranxAmount ;
     }
 }

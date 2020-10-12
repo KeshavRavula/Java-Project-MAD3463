@@ -127,9 +127,8 @@ public class TransactionImpl {
                 JSONArray transactionDetails = (JSONArray) details.get("TransactionDetails");
                 for (int i = 0; i < transactionDetails.size(); i++) {
                     JSONObject trandetails = (JSONObject) transactionDetails.get(i);
-                    if(trandetails.size()!=0)
+                    if(!trandetails.isEmpty())
                     {
-                        transactions.clear();
                         Transactions tranx = new Transactions();
                         tranx.setTranxID(UUID.fromString(trandetails.get("TransactionID").toString()));
                         tranx.setTranxAmount((double)trandetails.get("TransactionAmount"));
@@ -137,9 +136,8 @@ public class TransactionImpl {
                         tranx.setTranxDate(new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy").parse(trandetails.get("TransactionDate").toString()));
                         transactions.add(tranx);
                     }
-                    System.out.println(transactions.toString());
-
                 }
+                System.out.println(transactions.toString());
                 return null;
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
