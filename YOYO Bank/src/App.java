@@ -51,18 +51,16 @@ public class App {
 
         System.out.println("Welcome User "+loggedInUser);
         file+="/Files/"+loggedInUser+".json";
-
-
         int choice;
         do {
-            System.out.println("Please select and option :\n 1) Display Account Balance\n 2) Display Transactions\n 3) Deposit Money\n 4) Withdraw Money\n 5) Transfer Money\n 6) Utility Bill\n 0) Logout");
+            System.out.println("Please select and option :\n 1) Display Account Balance\n 2) Display Transactions\n 3) Deposit Money\n 4) Withdraw Money\n 5) Transfer Money\n 6) Utility Bill\n 7) Edit Profile\n 0) Logout");
             choice = input.nextInt();
             switch (choice) {
                 case 1:
                     System.out.println("Your Account Balance is : "+accountImpl.DisplayBalance(file));
                     break;
                 case 2:
-                    System.out.println(transactionImpl.displayTransactions(file));
+                    transactionImpl.displayTransactions(file);
                     break;
                 case 3:
                     System.out.println("Enter Amount to Deposit");
@@ -83,6 +81,9 @@ public class App {
                     System.out.println("Amount to be paid : ");
                     double billAmount=input.nextDouble();
                     transactionImpl.withDraw(billAmount,file,utility);
+                    break;
+                case 7:
+                    userImpl.editProfile(file);
                     break;
                 case 0://Control returns to main
                     break;

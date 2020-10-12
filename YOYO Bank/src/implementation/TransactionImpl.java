@@ -1,6 +1,7 @@
 package implementation;
 
 
+import models.Transactions;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
@@ -8,10 +9,8 @@ import org.json.simple.parser.ParseException;
 
 
 import java.io.*;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Scanner;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class TransactionImpl {
     UserImpl userImpl = new UserImpl();
@@ -115,6 +114,7 @@ public class TransactionImpl {
 
         public String displayTransactions(String file)
         {
+            ArrayList<Transactions> transactions = new ArrayList<>();
             try (FileReader reader = new FileReader(file)) {
                 JSONParser jsonParser = new JSONParser();
                 //Read JSON file
@@ -129,23 +129,28 @@ public class TransactionImpl {
                     JSONObject trandetails = (JSONObject) transactionDetails.get(i);
                     if(trandetails.size()!=0)
                     {
-                        trandetails.get("TransactionID");
-                        trandetails.get("TransactionAmount");
-                        trandetails.get("TransactionType");
-                        trandetails.get("TransactionDate");
-                        System.out.println(trandetails.toString());
+                        transactions.clear();
+                        Transactions tranx = new Transactions();
+                        tranx.setTranxID(UUID.fromString(trandetails.get("TransactionID").toString()));
+                        tranx.setTranxAmount((double)trandetails.get("TransactionAmount"));
+                        tranx.setTranxType(trandetails.get("TransactionType").toString());
+                        tranx.setTranxDate(new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy").parse(trandetails.get("TransactionDate").toString()));
+                        transactions.add(tranx);
                     }
+                    System.out.println(transactions.toString());
 
                 }
-                return transactionDetails.toString();
+                return null;
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ParseException e) {
                 e.printStackTrace();
+            } catch (java.text.ParseException e) {
+                e.printStackTrace();
             }
-            return transactions;
+            return null;
         }
 
     }
