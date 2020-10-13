@@ -7,6 +7,7 @@ public class Transactions {
     private UUID tranxID;
     private String tranxType;
     private Date tranxDate;
+    private double tranxAmount;
 
     public UUID getTranxID() {
         return tranxID;
@@ -30,5 +31,21 @@ public class Transactions {
 
     public void setTranxDate(Date tranxDate) {
         this.tranxDate = tranxDate;
+    }
+
+    public double getTranxAmount() {
+        return tranxAmount;
+    }
+
+    public void setTranxAmount(double tranxAmount) {
+        this.tranxAmount = tranxAmount;
+    }
+
+    @Override
+    public String toString() {
+        return "\nTransaction:" + "\nTransaction ID=" + tranxID +
+                "\nTransaction Type=" + tranxType+
+                "\nTransaction Date=" + tranxDate +
+                "\nTransaction Amount=" + tranxAmount ;
     }
 }

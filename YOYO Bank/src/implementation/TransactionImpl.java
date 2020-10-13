@@ -1,16 +1,16 @@
 package implementation;
 
-import org.json.simple.*;
+
+import models.Transactions;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Date;
-import java.util.Scanner;
-import java.util.UUID;
+
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class TransactionImpl {
     UserImpl userImpl = new UserImpl();
@@ -41,13 +41,9 @@ public class TransactionImpl {
                     JSONObject transactionObject=new JSONObject();
                     transactionObject.put("TransactionID", UUID.randomUUID().toString());
                     transactionObject.put("TransactionType", transactionType);
+                    transactionObject.put("TransactionAmount",amount);
                     transactionObject.put("TransactionDate", new Date().toString());
                     transactionDetails.add(transactionObject);
-
-
-
-                    //JSONObject transactionObject = (JSONObject) transactionDetails.get(transactionDetails.size() - 1);
-
 
                     FileWriter fileName = new FileWriter(file);
                     fileName.write(obj.toJSONString());
@@ -69,10 +65,7 @@ public class TransactionImpl {
 
         public void deposit(double amount,String file,String trnsactionType)
         {
-            oldBalance = accountImpl.DisplayBalance(file);
-
-
-
+                    oldBalance = accountImpl.DisplayBalance(file);
                     newBalance = oldBalance + amount;
                     oldBalance = newBalance;
                     //String file="C:/Users/saikrishnaboddu/Documents/New folder/Java-Project-MAD3463/YOYO Bank/Files/"+username+".json";
@@ -87,15 +80,11 @@ public class TransactionImpl {
 
                         JSONArray transactionDetails = (JSONArray) details.get("TransactionDetails");
                         JSONObject transactionObject=new JSONObject();
+                        transactionObject.put("TransactionAmount",amount);
                         transactionObject.put("TransactionID", UUID.randomUUID().toString());
                         transactionObject.put("TransactionType", trnsactionType);
                         transactionObject.put("TransactionDate", new Date().toString());
                         transactionDetails.add(transactionObject);
-
-
-
-                        //JSONObject transactionObject = (JSONObject) transactionDetails.get(transactionDetails.size() - 1);
-
 
                         FileWriter fileName = new FileWriter(file);
                         fileName.write(obj.toJSONString());
@@ -117,13 +106,15 @@ public class TransactionImpl {
             System.out.println("Please enter amount to transfer");
             double amountToTransfer=input.nextDouble();
             withDraw(amountToTransfer,fromfile,"Transfer");
-            String tofile="C:/Users/saikrishnaboddu/Documents/New folder/Java-Project-MAD3463/YOYO Bank/Files/"+receiver+".json";
+            String tofile = System.getProperty("user.dir")+"/YOYO Bank/Files/"+receiver+".json";
+           //String tofile="C:/Users/saikrishnaboddu/Documents/New folder/Java-Project-MAD3463/YOYO Bank/Files/"+receiver+".json";
             deposit(amountToTransfer,tofile,"Transfer");
         }
 
 
         public String displayTransactions(String file)
         {
+            ArrayList<Transactions> transactions = new ArrayList<>();
             try (FileReader reader = new FileReader(file)) {
                 JSONParser jsonParser = new JSONParser();
                 //Read JSON file
@@ -134,17 +125,30 @@ public class TransactionImpl {
                 accountObj.put("Balance", newBalance);
 
                 JSONArray transactionDetails = (JSONArray) details.get("TransactionDetails");
-                return transactionDetails.toString();
-
+                for (int i = 0; i < transactionDetails.size(); i++) {
+                    JSONObject trandetails = (JSONObject) transactionDetails.get(i);
+                    if(!trandetails.isEmpty())
+                    {
+                        Transactions tranx = new Transactions();
+                        tranx.setTranxID(UUID.fromString(trandetails.get("TransactionID").toString()));
+                        tranx.setTranxAmount((double)trandetails.get("TransactionAmount"));
+                        tranx.setTranxType(trandetails.get("TransactionType").toString());
+                        tranx.setTranxDate(new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy").parse(trandetails.get("TransactionDate").toString()));
+                        transactions.add(tranx);
+                    }
+                }
+                System.out.println(transactions.toString());
+                return null;
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ParseException e) {
                 e.printStackTrace();
+            } catch (java.text.ParseException e) {
+                e.printStackTrace();
             }
-            return transactions;
+            return null;
         }
 
     }
-
